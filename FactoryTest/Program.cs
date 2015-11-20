@@ -50,13 +50,19 @@ namespace FactoryTest
             Console.WriteLine("Please enter an employee type:");
             Console.WriteLine("1 = Contract Employee");
             Console.WriteLine("2 = Fulltime Employee");
-            int selectedEmployee = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("-----------------------");
+            int selectedEmployee;
+            if (Int32.TryParse(Console.ReadLine(), out selectedEmployee))
+            {
 
 
-            Employee employee = Factory.Create(options[selectedEmployee]);
-            employee.GetEmployeeDetails();
+                Employee employee = Factory.Create(options[selectedEmployee]);
+                employee.GetEmployeeDetails();
+            }
+            else
+                Console.WriteLine("Exiting...\n");
 
-
+            Console.ReadLine();
         }
     }
 
@@ -64,15 +70,14 @@ namespace FactoryTest
     {
         private static Dictionary<string, Employee> emp = new Dictionary<string, Employee>();
 
-        static Factory()
-        {
-            emp.Add("ContractEmployee", new ContractEmployee());
-            emp.Add("FulltimeEmployee", new FulltimeEmployee());
-
-        }
-
         public static Employee Create(string empType)
         {
+            // lazy load objects
+            if(emp.Count == 0)
+            {
+                emp.Add("ContractEmployee", new ContractEmployee());
+                emp.Add("FulltimeEmployee", new FulltimeEmployee());
+            }
             return emp[empType];
         }
     }
