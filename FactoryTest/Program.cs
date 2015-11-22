@@ -25,6 +25,7 @@ namespace FactoryTest
         public override void GetEmployeeDetails()
         {
             Console.WriteLine("Contract Employee Details");
+            Console.WriteLine("Hourly Rate: 75.00");
         }
     }
 
@@ -35,6 +36,7 @@ namespace FactoryTest
         public override void GetEmployeeDetails()
         {
             Console.WriteLine("Fulltime Employee Details");
+            Console.WriteLine("Salary: 110,000.00");
         }
     }
 
@@ -43,6 +45,14 @@ namespace FactoryTest
     {
         static void Main(string[] args)
         {
+            for(int x = 0; x < 10; x++)
+            {
+                Console.WriteLine();
+                for(int i = 1; i< x;i++)
+                {
+                    Console.Write("*");
+                }
+            }
             Dictionary<int, string> options = new Dictionary<int, string>();
             options.Add(1, "ContractEmployee");
             options.Add(2, "FulltimeEmployee");
@@ -54,8 +64,24 @@ namespace FactoryTest
             int selectedEmployee;
             if (Int32.TryParse(Console.ReadLine(), out selectedEmployee))
             {
+                // just for fun...
+                char c = ' ';
+                for(int i = 0; i <= 50; i++)
+                {
+                    switch(i%4)
+                    {
+                        case 0: c = '/'; break;
+                        case 1: c = '-'; break;
+                        case 2: c = '\\'; break;
+                        case 3: c = '|';break;
+                         
+                    }
+                    System.Threading.Thread.Sleep(40);
+                    double percent = (i * 100) / 50;
 
-
+                    Console.Write(String.Format("\r [{0}]% {1}", percent,c));
+                }
+                Console.Write("\n");
                 Employee employee = Factory.Create(options[selectedEmployee]);
                 employee.GetEmployeeDetails();
             }
